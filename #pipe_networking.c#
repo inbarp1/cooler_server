@@ -9,14 +9,19 @@
   returns the file descriptor for the upstream pipe.
   =========================*/
 int server_setup() {
-    int from_client;
-    const char * well_known = "well_known";
-    mkfifo(well_known, 0644);
-    from_client = open(well_known, O_RDONLY);
-    char priv[256];
-    read(from_client,priv,sizeof(priv));
-    remove(well_known);
-    return from_client;
+  int from_client;
+  char priv[256];
+  const char * well_known = "well_known";
+  //vars
+  mkfifo(well_known, 0644);
+  from_client = open(well_known, O_RDONLY);
+  printf("Server established connection with client.\n");
+  read(from_client,priv,sizeof(priv));
+  //connection
+  remove(well_known);
+  printf("Server removed WKP\n");
+  return from_client;
+  //removes wkp 
 }
 
 
@@ -27,8 +32,12 @@ int server_setup() {
   returns the file descriptor for the downstream pipe.
   =========================*/
 int server_connect(int from_client) {
-  
-  return -1;
+  char priv[256];
+  read(from_client, priv, sizeof(priv));
+  int operation = open(priv, O_WRONLY);
+  write(operation, "Message recieved", 17);
+  read(from_client, priv, sizeof(priv));
+  printf("Client message to subserver: %s \n", priv);
 }
 
 /*=========================
