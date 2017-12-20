@@ -10,12 +10,11 @@
   =========================*/
 int server_setup() {
     int from_client;
-    const char * well_known = "well_known";
-    mkfifo(well_known, 0644);
+    const char * well_known = "luigi";
+    mkfifo(well_known, 0600);
+    printf("[server] handshake: making wkp\n");
     from_client = open(well_known, O_RDONLY);
-    char priv[256];
-    read(from_client,priv,sizeof(priv));
-    remove(well_known);
+    printf("Server is set up.\n");
     return from_client;
 }
 
@@ -27,8 +26,16 @@ int server_setup() {
   returns the file descriptor for the downstream pipe.
   =========================*/
 int server_connect(int from_client) {
-  
-  return -1;
+  char priv[256];
+  read(from_client, priv, sizeof(priv));
+  //printf("Subserver %d: received [%s]\n",getpid(), priv);
+  int operation = open(priv, O_WRONLY,0);
+  write(operation, priv, sizeof(priv));
+  if(read(from_client, priv, sizeof(priv))){
+    // printf("Subserver %d: Completed the handshake\n", getpid());
+  }
+  //*to_client = operation;
+  return from_client;
 }
 
 /*=========================
