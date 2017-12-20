@@ -39,10 +39,10 @@ void subserver(int from_client) {
   char b[256];
   int to_client = server_connect(from_client);
   while(read(from_client,b,sizeof(b))){
-    printf("Subserver %d: Received [%s]\n",getpid(), b);
+    printf("Subserver %d: Received [%s] from [%d]\n",getpid(), b, from_client);
     process(b);
     write(to_client, b, sizeof(b));
-    printf("Subserver %d: Wrote[%s]\n", getpid(), b);
+    printf("Subserver %d: Wrote[%s] to [%d]\n", getpid(), b, to_client);
   }
 }
 

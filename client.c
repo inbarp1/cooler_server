@@ -14,6 +14,6 @@ int main() {
     *strchr(buffer, '\n') = 0;
     write(to_server, buffer, sizeof(buffer));
     read(from_server, buffer, sizeof(buffer));
-    printf("received: [%s]\n", buffer);
+    printf("received: [%s] from %d\n", buffer, from_server);
   }
 }

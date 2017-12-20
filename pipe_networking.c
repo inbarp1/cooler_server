@@ -35,7 +35,7 @@ int server_connect(int from_client) {
     // printf("Subserver %d: Completed the handshake\n", getpid());
   }
   //*to_client = operation;
-  return from_client;
+  return operation;
 }
 
 /*=========================
